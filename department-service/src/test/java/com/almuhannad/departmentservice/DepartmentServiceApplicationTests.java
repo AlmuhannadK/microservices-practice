@@ -1,4 +1,4 @@
-package com.almuhannad.department_service;
+package com.almuhannad.departmentservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

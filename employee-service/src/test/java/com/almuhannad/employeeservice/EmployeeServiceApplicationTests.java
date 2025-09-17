@@ -1,4 +1,4 @@
-package com.almuhannad.employee_service;
+package com.almuhannad.employeeservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

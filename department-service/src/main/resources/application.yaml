@@ -11,3 +11,6 @@ spring:
     show-sql: true
 #    database-platform: org.hibernate.dialect.MySQLDialect
 #    MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+
+server:
+  port: 8081
