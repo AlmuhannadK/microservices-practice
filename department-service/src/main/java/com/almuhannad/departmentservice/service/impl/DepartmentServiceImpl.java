@@ -2,6 +2,7 @@ package com.almuhannad.departmentservice.service.impl;
 
 import com.almuhannad.departmentservice.dto.DepartmentDto;
 import com.almuhannad.departmentservice.entity.Department;
+import com.almuhannad.departmentservice.mapper.DepartmentMapper;
 import com.almuhannad.departmentservice.repository.DepartmentRepository;
 import com.almuhannad.departmentservice.service.DepartmentService;
 import lombok.extern.slf4j.Slf4j;
@@ -15,31 +16,24 @@ public class DepartmentServiceImpl implements DepartmentService {
 	
 	private final DepartmentRepository departmentRepository;
 	
-	public DepartmentServiceImpl(DepartmentRepository departmentRepository) {
+	private final DepartmentMapper departmentMapper;
+	
+	public DepartmentServiceImpl(DepartmentRepository departmentRepository, DepartmentMapper departmentMapper) {
 		
 		this.departmentRepository = departmentRepository;
+		this.departmentMapper = departmentMapper;
 	}
 	
 	
 	public DepartmentDto saveDepartment(DepartmentDto department) {
 		
-		Department newDepartment = new Department(
-				department.id(),
-				department.departmentName(),
-				department.departmentCode(),
-				department.departmentDescription()
-		);
+		Department newDepartment = departmentMapper.toEntity(department);
 		
 		Department savedDepartment = departmentRepository.save(newDepartment);
 		
 		log.info("Saved Department with code {}", savedDepartment.getDepartmentCode());
 		
-		return DepartmentDto.builder()
-				.id(savedDepartment.getId())
-				.departmentName(savedDepartment.getDepartmentName())
-				.departmentCode(savedDepartment.getDepartmentCode())
-				.departmentDescription(savedDepartment.getDepartmentDescription())
-				.build();
+		return departmentMapper.toDto(savedDepartment);
 	}
 	
 	public List <DepartmentDto> getAllDepartments() {
@@ -49,14 +43,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 		log.info("Returning all {} departments", allDepartments.size());
 		
 		return allDepartments.stream()
-				.map(department -> {
-					return DepartmentDto.builder()
-							.id(department.getId())
-							.departmentName(department.getDepartmentName())
-							.departmentCode(department.getDepartmentCode())
-							.departmentDescription(department.getDepartmentDescription())
-							.build();
-				})
+				.map(departmentMapper::toDto)
 				.toList();
 	}
 	
@@ -66,11 +53,6 @@ public class DepartmentServiceImpl implements DepartmentService {
 		
 		log.info("Returning Department {}", department.getDepartmentName());
 		
-		return DepartmentDto.builder()
-				.id(department.getId())
-				.departmentName(department.getDepartmentName())
-				.departmentCode(department.getDepartmentCode())
-				.departmentDescription(department.getDepartmentDescription())
-				.build();
+		return departmentMapper.toDto(department);
 	}
 }
